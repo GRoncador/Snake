@@ -6,11 +6,39 @@ body {
     --board-size:0;
     width: var(--board-size);
     margin: 0px auto;
+    font-family: 'Quicksand', sans-serif;
 }
 
 canvas {
     /*width: var(--board-size);
     height: var(--board-size);*/
     border: 1px solid;
-    margin: 20px 0px;
+}
+
+p {
+    margin: 2px auto;
+    font-size: 14px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;    
+}
+
+#score-display {
+    width: 100%;
+    margin: 30px auto 0px auto;
+}
+
+footer {
+    display: block;
+    margin: 0px auto;
+    width: 100%;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }

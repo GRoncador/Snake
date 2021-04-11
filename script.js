@@ -31,6 +31,12 @@ document.addEventListener('keydown', event => {
     
         }
 
+    } else if (event.key == 'Enter' && game.score == 0) {
+
+        ctx.clearRect(0, 0, board.size, board.size);
+
+        gameStart();
+
     }
 
 });
@@ -54,6 +60,7 @@ var game = {
     score : 0,
     highScore : 0,
     level : 0, // number of eaten apples
+    intervalID : 0, // ID of set interval for gameLoop
 
     // score grows as AP finite sum
     APa1 : 2,
@@ -80,22 +87,14 @@ var snake = {
     fillStyle : 'grey',
     strokeStyle : 'black',
 
-    startVelocity : 200, // in ms
     acceleration : 25, //in ms
     velocity : 0, //in ms
 
-    startXDirection : 1,
     xDirection : 0,
     yDirection : 0,
     lastDirection : {},
 
-    startTrail : [
-        {x:8, y:10},
-        {x:7, y:10},
-        {x:6, y:10},
-        {x:5, y:10},
-        ],
-    trail : [],
+    trail : [{x:8, y:10}, {x:7, y:10}, {x:6, y:10}, {x:5, y:10}],
 
     checkHit(x,y) {
 
@@ -185,8 +184,7 @@ var apple = {
     fillStyle : 'red',
     strokeStyle : 'grey',
 
-    startPosition : {x:15, y:10},
-    position : {},
+    position : {x:15, y:10},
 
     checkHit(x,y) {
 
@@ -236,19 +234,20 @@ function updateScreen() {
 
 function gameStart() {
 
-    game.level = 0;
+    game.level = game.intervalID = 0; // reset game score and level
+    snake.trail = [{x:8, y:10}, {x:7, y:10}, {x:6, y:10}, {x:5, y:10}] // snake start trail
+    snake.xDirection = 1 // snake start xDirection
+    snake.yDirection = 0 // snake start yDirection
+    snake.lastDirection = {} // reset snake last direction
+    snake.velocity = 200 // snake start velocity
 
-    snake.trail = snake.startTrail
-    snake.xDirection = snake.startXDirection
-    snake.velocity = snake.startVelocity
-
-    apple.position = apple.startPosition
-
-    //console.log('gameStart()', snake.trail, snake.xDirection, snake.velocity, apple.position),
+    apple.position = {x:15, y:10} // apple start position
 
     updateScreen();
+    
+    // o problema na reinicialização é com snake trail e apple position
 
-    setInterval(gameLoop, 100);
+    game.intervalID = setInterval(gameLoop, 100);
 
 }
 
@@ -265,11 +264,7 @@ function gameOver() {
 
 function gameLoop() {
 
-    //console.log('inicio gameloop')
-
     if (!gameOver()) {
-
-       // console.log('! gameover condição')
 
         ctx.clearRect(0, 0, board.size, board.size);
 
@@ -279,16 +274,52 @@ function gameLoop() {
 
         game.updateScore();
 
-    }
+    } else {
+
+        clearInterval(game.intervalID);
+
+        ctx.fillStyle = '#ffffffb5'
+        ctx.fillRect(0, 0, board.size, board.size)
+    
+        ctx.fillStyle = 'black'
+    
+        ctx.textAlign = "center";
+        ctx.font = "60px 'Quicksand', sans-serif";
+        ctx.fillText("GAME OVER!", board.size/2, board.size/2);
+    
+        ctx.textAlign = "center";
+        ctx.font = "20px 'Quicksand', sans-serif";
+        ctx.fillText("press ENTER to play again", board.size/2, board.size*3/4);
+
+        if (game.score > game.highScore) {
+
+            ctx.fillStyle = "red";
+            ctx.textAlign = "center";
+            ctx.font = "20px 'Quicksand', sans-serif";
+            ctx.fillText("new high score!", board.size/2, board.size/4);
+
+            game.highScore = game.score;
+    
+        }
+
+        snake.trail.length = 0
+    
+        game.updateScore();
+        game.score = 0;
+    
+
+        }
 
 }
 
 board.setBoard()
 
-gameStart()
+ctx.textAlign = "center";
+ctx.font = "60px 'Quicksand', sans-serif";
+ctx.fillText("Snake", board.size/2, board.size/4);
 
+ctx.textAlign = "center";
+ctx.font = "20px 'Quicksand', sans-serif";
+ctx.fillText("press ENTER to play", board.size/2, board.size*3/4);
 
-
-
-
-
+updateScreen()
