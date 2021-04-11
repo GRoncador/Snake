@@ -5,8 +5,6 @@ document.addEventListener('keydown', event => {
 
     if (directions.includes(event.key)) {
 
-        console.log(snake.lastDirection.x,snake.lastDirection.y,event.key)
-
         if (event.key == 'ArrowUp' && snake.lastDirection.y != 1) {
     
             snake.xDirection = 0;
@@ -56,6 +54,19 @@ var game = {
     score : 0,
     highScore : 0,
     level : 0, // number of eaten apples
+
+    // score grows as AP finite sum
+    APa1 : 2,
+    APr : 4,
+
+    updateScore() {
+
+        document.getElementById('score').innerText = `Score: ${this.score}`;
+
+        document.getElementById('best-score').innerText = `High Score: ${this.highScore}`;
+
+    }
+
 }
 
 const directions = [
@@ -140,6 +151,10 @@ var snake = {
 
             apple.move();
 
+            game.level ++
+
+            game.score = game.level*(game.APa1+(game.APa1+(game.level-1)*game.APr))/2
+
         } else {
 
             this.trail.unshift(nextSquare);
@@ -221,6 +236,8 @@ function updateScreen() {
 
 function gameStart() {
 
+    game.level = 0;
+
     snake.trail = snake.startTrail
     snake.xDirection = snake.startXDirection
     snake.velocity = snake.startVelocity
@@ -259,6 +276,8 @@ function gameLoop() {
         snake.move();
 
         updateScreen();
+
+        game.updateScore();
 
     }
 
