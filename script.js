@@ -5,25 +5,27 @@ document.addEventListener('keydown', event => {
 
     if (directions.includes(event.key)) {
 
-        if (event.key == 'ArrowUp') {
+        console.log(snake.lastDirection.x,snake.lastDirection.y,event.key)
+
+        if (event.key == 'ArrowUp' && snake.lastDirection.y != 1) {
     
             snake.xDirection = 0;
     
             snake.yDirection = - 1;
     
-        } else if (event.key == 'ArrowRight') {
+        } else if (event.key == 'ArrowRight' && snake.lastDirection.x != -1) {
     
             snake.xDirection = 1;
     
             snake.yDirection = 0;
     
-        } else if (event.key == 'ArrowDown') {
+        } else if (event.key == 'ArrowDown' && snake.lastDirection.y != -1) {
     
             snake.xDirection = 0;
     
             snake.yDirection = 1;
     
-        } else {
+        } else if (event.key == 'ArrowLeft' && snake.lastDirection.x != 1){
     
             snake.xDirection = - 1;
     
@@ -74,6 +76,7 @@ var snake = {
     startXDirection : 1,
     xDirection : 0,
     yDirection : 0,
+    lastDirection : {},
 
     startTrail : [
         {x:8, y:10},
@@ -107,6 +110,9 @@ var snake = {
 
         var nextX = this.trail[0].x + this.xDirection;
         var nextY = this.trail[0].y + this.yDirection;
+
+        this.lastDirection.x = this.xDirection;
+        this.lastDirection.y = this.yDirection;
 
         if (nextX < 0) {
 
