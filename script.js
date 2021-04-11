@@ -185,9 +185,9 @@ var apple = {
 
         while ( snake.checkHit(this.position.x,this.position.y) ) {
 
-            this.position.x = parseInt( ( Math.random() * board.numberOfSquares ) + 1 );
+            this.position.x = parseInt( ( Math.random() * board.numberOfSquares ) );
 
-            this.position.y = parseInt( ( Math.random() * board.numberOfSquares ) + 1 );
+            this.position.y = parseInt( ( Math.random() * board.numberOfSquares ) );
 
         }
 
