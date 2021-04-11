@@ -1,0 +1,16 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    --board-size:0;
+    width: var(--board-size);
+    margin: 0px auto;
+}
+
+canvas {
+    /*width: var(--board-size);
+    height: var(--board-size);*/
+    border: 1px solid;
+    margin: 20px 0px;
+}
